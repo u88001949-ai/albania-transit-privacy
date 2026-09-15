@@ -32,12 +32,17 @@ access the app remains fully usable — it centres on Tirana instead.</p>
 <h2>Where it goes</h2>
 <p>Your location stays on your device, with one exception. To draw the
 walking parts of a route along real streets, the app sends the start
-and end coordinates of each walking segment to the Mapbox Directions
-API. Map tiles are also served by Mapbox. Mapbox processes this data
-under its own privacy policy:
-<a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a>.
-We do not send your location anywhere else, and we do not store it on
-any server of ours — we do not operate one.</p>
+and end coordinates of each walking segment to a service we operate on
+Cloudflare Workers, which caches them and forwards them to the Mapbox
+Directions API. Map tiles are served by Mapbox directly. We do not log
+these coordinates or connect them to you, and we keep no account,
+identifier or profile that could link them to a person. Mapbox and
+Cloudflare process the data under their own privacy policies:
+<a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a>
+and
+<a href="https://www.cloudflare.com/privacypolicy/">cloudflare.com/privacypolicy</a>.
+We do not send your location anywhere else and we do not store it on
+any server of ours.</p>
 
 <h2>What we keep on your device</h2>
 <p>Saved stops, saved lines, your language and theme choice, and
@@ -45,7 +50,7 @@ whether you have seen the introduction. This stays on your phone and
 is removed when you uninstall the app.</p>
 
 <h2>Children</h2>
-<p>The app is not directed at children under 13 and collects no data
+<p>The app is not directed at children under 16 and collects no data
 about them.</p>
 
 <h2>Selling data</h2>
@@ -76,12 +81,18 @@ aplikacioni funksionon plotësisht — thjesht qendërzohet në Tiranë.</p>
 <h2>Ku shkon</h2>
 <p>Vendndodhja mbetet në pajisjen tuaj, me një përjashtim. Për të
 vizatuar pjesët në këmbë përgjatë rrugëve reale, aplikacioni dërgon
-koordinatat e nisjes dhe të mbërritjes së çdo segmenti në këmbë te
-Mapbox Directions API. Edhe pamjet e hartës vijnë nga Mapbox. Mapbox
-i përpunon këto të dhëna sipas politikës së vet:
-<a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a>.
+koordinatat e nisjes dhe të mbërritjes së çdo segmenti në këmbë te një
+shërbim që ne e mbajmë në Cloudflare Workers, i cili i ruan në memorie
+dhe ia përcjell Mapbox Directions API. Pamjet e hartës vijnë drejtpërdrejt
+nga Mapbox. Ne nuk i regjistrojmë këto koordinata dhe nuk i lidhim me ju,
+dhe nuk mbajmë asnjë llogari apo identifikues që do t'i lidhte me një
+person. Mapbox dhe Cloudflare i përpunojnë të dhënat sipas politikave të
+tyre:
+<a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a>
+dhe
+<a href="https://www.cloudflare.com/privacypolicy/">cloudflare.com/privacypolicy</a>.
 Nuk e dërgojmë vendndodhjen askund tjetër dhe nuk e ruajmë në asnjë
-server tonin — nuk kemi server.</p>
+server tonin.</p>
 
 <h2>Çfarë ruhet në pajisje</h2>
 <p>Stacionet dhe linjat e ruajtura, gjuha dhe tema që keni zgjedhur,
@@ -89,7 +100,7 @@ dhe nëse e keni parë hyrjen. Këto rrinë në telefon dhe fshihen kur
 çinstalohet aplikacioni.</p>
 
 <h2>Fëmijët</h2>
-<p>Aplikacioni nuk u drejtohet fëmijëve nën 13 vjeç dhe nuk mbledh të
+<p>Aplikacioni nuk u drejtohet fëmijëve nën 16 vjeç dhe nuk mbledh të
 dhëna për ta.</p>
 
 <h2>Shitja e të dhënave</h2>
