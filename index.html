@@ -16,7 +16,7 @@
 <body>
 
 <h1>Albania Transit — Privacy Policy</h1>
-<p class="muted">Last updated: 25 October 2026 · <a href="#shqip">Shqip më poshtë</a></p>
+<p class="muted">Last updated: 28 October 2026 · <a href="#shqip">Shqip më poshtë</a></p>
 
 <p>This policy explains what the Albania Transit app (package <code>al.albaniatransit.app</code>) processes, why, and
 who else is involved. The app does not need an account, does not use analytics or crash-reporting services, and does
@@ -44,14 +44,20 @@ kind of request. Map tiles you have viewed are cached on your phone so they can 
 <h2>Walking directions, timetables and trip planning</h2>
 <p>Timetables, stops, lines and the walking network are stored inside the app. Trips and walking directions are
 calculated on your phone; your origin and destination are not sent to us.</p>
+<p>Version 1.0.0 of the app, an early version, instead asked our server for each walking leg: it sent the start and
+end of the leg, rounded to about 11 m, and, like any web request, your IP address, used only to limit abuse. Our
+server got the route from Mapbox, which receives those points from our server — not your IP address — and Cloudflare
+keeps the answer in its cache for up to a year so that the same walk is not asked for again; nothing that identifies
+you is stored with it. Later versions do not send this.</p>
 
 <h2>Place search</h2>
 <p>Search first looks through the places stored inside the app. When you are online and type three letters or more,
 the words you type are also sent to Photon, an OpenStreetMap search service run by komoot GmbH
 (<code>photon.komoot.io</code>), so search can find every street, café, shop and address in Albania. Along with the
-words goes the centre of the city you are searching in (Tirana, Durrës or Berat) — never your own location — and, like
-any web request, your IP address. Nothing that identifies you or your device is sent. Offline, search uses only the
-places stored in the app.</p>
+words goes the centre of the city you are searching in (Tirana, Durrës or Berat) — never your own location — the
+app's name and version, and, like any web request, your IP address. Nothing that identifies you or your device is
+sent. komoot decides how long it keeps these requests; see its privacy policy. Offline, search uses only the places
+stored in the app.</p>
 
 <h2>Premium (only if you buy it)</h2>
 <p>Premium is sold through Google Play. When you buy it, Google Play handles the payment; we never receive your name,
@@ -60,27 +66,60 @@ sends to Google to confirm the purchase and its status. Google also tells our se
 subscription — renewals, cancellations, payment problems, refunds — through Google Cloud Pub/Sub; each notice carries
 the purchase token, and our server then asks Google for the current status. Our server signs in to Google's API
 through Google Cloud without storing any Google key.</p>
-<p>To link your plan to your phone without an account, the app sends our server an anonymous key: a one-way hash
-derived from your device's Android ID. The server stores only a further one-way hash of that key, and only for phones
-linked to a plan; with it, the date the phone was first linked. For each subscription it stores the purchase token
-(so that it can check your plan with Google again, for example at each renewal); what Google reports about the
-subscription (the product, monthly or yearly, its state, the end of the current period, whether it renews, whether it
-was acknowledged, whether it was a test purchase); and which phones use it — at most five — with when each last
-checked in, so that a phone not used for 60 days frees its place. The plan status our server sends back is signed for
-your phone only, so a copy of it does not work on another phone.</p>
-<p>Our server processes your IP address to limit abuse — for example, too many purchase checks from one address. For
-this it keeps a counter per address (for IPv6, per network) holding only the latest day's count, and deletes it two
-days after the address was last seen. It also keeps a
-short log of the last few dozen purchase events — their kind, time and the state Google reported — with no purchase
-token and no device identifier, to check that purchases and renewals work. We do not store your trips.</p>
+<p>To link your plan to your phone without an account, the app uses an anonymous key: a one-way hash derived from
+your device's Android ID. It sends this key to our server with each plan check, and gives it to Google Play with a
+purchase (as the purchase's account identifier, which Google uses against fraud). Our server stores a phone only as
+a further, salted one-way hash of that key, and only for a phone linked to a plan; with it, the date it was first
+stored. It never stores the key itself: the copies that an earlier version kept in subscription records, as Google
+reported the key back with a purchase, were removed on 28 October 2026. For each subscription it stores the purchase
+token (so that it can check your plan with Google again, for example at each renewal) and, after a change of plan, the token of the
+purchase it replaced; what Google reports about the subscription (the product, monthly or yearly, its state, the end
+of the current period, whether it renews, whether it was acknowledged, whether it was a test purchase) and when it
+last asked Google; and which phones use it — at most five, as salted hashes — with when each last checked in, so that
+a phone not used for 60 days frees its place. The plan status our server sends back is signed for your phone only, so
+a copy of it does not work on another phone.</p>
+<p>The app checks your plan when it starts, when it comes back to the screen and on the Premium tab: at most every
+ten minutes if you have or have had a plan, and on Free, with nothing to look up, at most once a week. A check for a
+phone with no plan stores nothing.</p>
+<p>Our server processes your IP address to limit abuse. Cloudflare's rate limiter counts the requests from each address
+over a minute. For checks of purchase tokens it has not seen before and for wrong access codes, our server keeps a
+counter per address (for IPv6, per network) holding only that day's count, and deletes it two days after its last
+count, never before that day is over. It also keeps a short journal of
+the purchase events of the last 30 days — their kind, time and the state Google reported — with no purchase token, no
+IP address and no device identifier, to check that purchases and renewals work; older entries are deleted. We do not
+store your trips.</p>
 <p>When our server cannot be reached, the app asks Google Play on your phone which subscriptions your Google account
 has, so that a plan that has ended or been refunded stops working. This happens on your phone; nothing about it is
 sent to us.</p>
-<p>Purposes and legal bases: providing Premium (performance of a contract); preventing fraud and abuse (legitimate
-interests). Retention: a subscription's records — the purchase token, what Google reported, the phones linked to it
-and when each last checked in — are deleted automatically 12 months after its last paid period ends; while you keep
-paying, they are kept. A phone whose purchase did not go through is forgotten after two days. You can ask us to delete
-your records sooner.</p>
+<h3>Access codes</h3>
+<p>Access codes let people we choose — in particular Google Play's app reviewers — use Premium without buying it. A
+code is entered on the Premium screen and sent to our server, which compares it with the codes it keeps as one-way
+hashes; the code itself is not stored. If it matches, the plan status our server signs for your phone says until when
+Premium is given and which code was used (its label, and the start of a one-way hash of the code — never the code).
+Our server records nothing about the phone: the app keeps that signed plan and sends it back with each check, and the
+server checks its own signature and that the code is still valid. Access lasts 30 days, can be renewed by entering the
+code again, and ends at the next check if we withdraw the code. For each code our server counts how many times it was
+used each day (no phone, no address; deleted two days later) and keeps a short journal of its first uses each day (the
+code's label and the time; 30 days), to notice a code shared beyond the people we gave it to. Wrong codes are counted
+per address as described above.</p>
+<h3>Purposes, legal bases and how long records are kept</h3>
+<p>Purposes and legal bases: providing Premium and access codes (performance of a contract, and our legitimate
+interest in having the app reviewed); preventing fraud and abuse (legitimate interests).</p>
+<p>Each record deletes itself automatically:</p>
+<ul>
+  <li>a subscription's records — purchase tokens, what Google reported, the phones linked to it and when each last
+    checked in — 12 months after its last paid period ends (while you keep paying, they are kept), and the links from
+    its purchase tokens and phones to it a day after that;</li>
+  <li>a phone stored for a purchase that did not go through, two days after it was stored;</li>
+  <li>a phone's access-code record kept by an earlier version of our server, a day after its access ends;</li>
+  <li>access-code counts, two days after their last count; their journal entries, after 30 days;</li>
+  <li>address counters, two days after their last count;</li>
+  <li>journal entries, after 30 days.</li>
+</ul>
+<p>Deletion normally happens within minutes of these dates. If our server's free daily capacity runs out, deletions
+due that day can be delayed; we then run a check that deletes them, normally within a few days. You can ask us to
+delete your records sooner. Cloudflare's storage also keeps a history from which our server could restore its records
+as they were at any time in the past 30 days; our server never does this.</p>
 
 <h2>Advertising</h2>
 <p>This version of the app shows no advertising and contains no advertising tracking: it never requests an ad and
@@ -96,10 +135,10 @@ on request.</p>
 <ul>
   <li>Your settings (language, theme, map options), saved stops and lines, and recent stops.</li>
   <li>Whether you have seen the introduction, and which version of the Terms of Use you acknowledged and when.</li>
-  <li>Premium only: the last plan status our server confirmed and signed for your phone; the latest time the app has
+  <li>Premium only (bought, or through an access code): the last plan status our server confirmed and signed for your phone; the latest time the app has
     seen, to notice a clock that was turned back; and whether Google Play on your phone still listed your plan when the
     server could not be reached. With these, Premium keeps working offline — for up to 35 days without a connection,
-    and never past the end of the period you paid for.</li>
+    and never past the end of the period you paid for, or of your access.</li>
   <li>Cached map tiles.</li>
 </ul>
 <p>This data is excluded from Android cloud backup. It is deleted when you clear the app's data or uninstall the
@@ -113,6 +152,7 @@ app.</p>
   <tr><td>Google (Google Cloud)</td><td>Delivering Google Play's notices about subscription changes to our server (Pub/Sub), and our server's sign-in to Google Play's API</td><td><a href="https://policies.google.com/privacy">policies.google.com/privacy</a></td></tr>
   <tr><td>komoot GmbH (Photon)</td><td>Place search: the words you type, as described above</td><td><a href="https://www.komoot.com/privacy">komoot.com/privacy</a></td></tr>
   <tr><td>OpenFreeMap — only as a fallback</td><td>The map, if our map server is unreachable</td><td><a href="https://openfreemap.org">openfreemap.org</a></td></tr>
+  <tr><td>Mapbox — version 1.0.0 only</td><td>Walking routes for the legs that version asked about, without your IP address</td><td><a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a></td></tr>
 </table>
 <p>These providers may process data outside Albania and the European Union, under their own safeguards.</p>
 
@@ -127,7 +167,8 @@ complain to a data-protection authority — in Albania, the Information and Data
 
 <h2>Security</h2>
 <p>All connections between the app and our servers use HTTPS. Purchase tokens are sent only to our server and to
-Google; our server stores them to check your plan and never shows them or writes them to its logs.</p>
+Google; our server stores them to check your plan and never shows them or writes them to its logs. Its log notes only
+technical failures, such as Google not answering — never a token, access code, key or address.</p>
 
 <h2>Changes</h2>
 <p>We update this policy when the app or its services change. The current version is always at
@@ -137,7 +178,7 @@ Google; our server stores them to check your plan and never shows them or writes
 
 <div lang="sq" id="shqip">
 <h1>Albania Transit — Politika e Privatësisë</h1>
-<p class="muted">Përditësuar më: 25 tetor 2026</p>
+<p class="muted">Përditësuar më: 28 tetor 2026</p>
 
 <p>Kjo politikë shpjegon çfarë përpunon aplikacioni Albania Transit (paketa <code>al.albaniatransit.app</code>), pse,
 dhe kush tjetër përfshihet. Aplikacioni nuk kërkon llogari, nuk përdor shërbime analitike apo raportimi të
@@ -167,14 +208,21 @@ hartës që keni parë ruhen në telefon që të shfaqen sërish, edhe pa intern
 <h2>Udhëzimet e ecjes, oraret dhe planifikimi i udhëtimit</h2>
 <p>Oraret, stacionet, linjat dhe rrjeti i ecjes ruhen brenda aplikacionit. Udhëtimet dhe udhëzimet e ecjes
 llogariten në telefonin tuaj; nisja dhe destinacioni juaj nuk na dërgohen.</p>
+<p>Versioni 1.0.0 i aplikacionit, një version i hershëm, e pyeste në vend të kësaj serverin tonë për çdo pjesë
+ecjeje: dërgonte fillimin dhe fundin e saj, të rrumbullakosura në rreth 11 m, dhe, si çdo kërkesë në internet,
+adresën tuaj IP, të përdorur vetëm për të kufizuar abuzimet. Serveri ynë e merrte rrugën nga Mapbox, i cili i merr
+këto pika nga serveri ynë — jo adresën tuaj IP — dhe Cloudflare e mban përgjigjen në memorien e vet deri në një vit,
+që e njëjta ecje të mos pyetet sërish; me të nuk ruhet asgjë që ju identifikon. Versionet e mëvonshme nuk e dërgojnë
+këtë.</p>
 
 <h2>Kërkimi i vendeve</h2>
 <p>Kërkimi shikon së pari vendet e ruajtura brenda aplikacionit. Kur jeni në internet dhe shkruani tre shkronja ose
 më shumë, fjalët që shkruani i dërgohen edhe Photon-it, një shërbim kërkimi i OpenStreetMap që e drejton komoot GmbH
 (<code>photon.komoot.io</code>), që kërkimi të gjejë çdo rrugë, kafe, dyqan dhe adresë në Shqipëri. Bashkë me fjalët
-dërgohet qendra e qytetit ku kërkoni (Tiranë, Durrës ose Berat) — kurrë vendndodhja juaj — dhe, si në çdo kërkesë në
-internet, adresa juaj IP. Nuk dërgohet asgjë që ju identifikon ju ose pajisjen tuaj. Pa internet, kërkimi përdor
-vetëm vendet e ruajtura në aplikacion.</p>
+dërgohet qendra e qytetit ku kërkoni (Tiranë, Durrës ose Berat) — kurrë vendndodhja juaj — emri dhe versioni i
+aplikacionit, dhe, si në çdo kërkesë në internet, adresa juaj IP. Nuk dërgohet asgjë që ju identifikon ju ose
+pajisjen tuaj. komoot vendos sa kohë i mban këto kërkesa; shihni politikën e tij të privatësisë. Pa internet, kërkimi
+përdor vetëm vendet e ruajtura në aplikacion.</p>
 
 <h2>Premium (vetëm nëse e blini)</h2>
 <p>Premium shitet përmes Google Play. Kur e blini, pagesën e trajton Google Play; ne nuk marrim kurrë emrin, adresën
@@ -183,27 +231,63 @@ e email-it apo të dhënat tuaja të pagesës. Google Play i jep aplikacionit nj
 serverin tonë për ndryshimet e abonimit — rinovimet, anulimet, problemet me pagesën, rimbursimet — përmes Google
 Cloud Pub/Sub; çdo njoftim përmban tokenin e blerjes, dhe serveri ynë pyet më pas Google për gjendjen aktuale.
 Serveri ynë hyn në API-në e Google përmes Google Cloud pa ruajtur asnjë çelës të Google.</p>
-<p>Për ta lidhur planin me telefonin pa llogari, aplikacioni i dërgon serverit tonë një çelës anonim: një hash i
-njëanshëm i nxjerrë nga Android ID e pajisjes. Serveri ruan vetëm një hash të mëtejshëm të atij çelësi, dhe vetëm për
-telefonat e lidhur me një plan; bashkë me të, datën kur telefoni u lidh për herë të parë. Për çdo abonim ruan tokenin
-e blerjes (që të mund ta kontrollojë sërish planin me Google, p.sh. në çdo rinovim); atë që Google raporton për
-abonimin (produkti, mujor apo vjetor, gjendja, fundi i periudhës aktuale, nëse rinovohet, nëse është konfirmuar,
-nëse ishte blerje prove); dhe cilët telefona e përdorin — jo më shumë se pesë — me kohën kur secili u lidh për herë
-të fundit, që një telefon i papërdorur për 60 ditë të lirojë vendin. Gjendja e planit që kthen serveri ynë është e
-nënshkruar vetëm për telefonin tuaj, ndaj një kopje e saj nuk funksionon në një telefon tjetër.</p>
-<p>Serveri ynë përpunon adresën tuaj IP për të kufizuar abuzimet — p.sh. shumë kontrolle blerjesh nga një adresë.
-Për këtë mban një numërues për çdo adresë (për IPv6, për çdo rrjet) që ruan vetëm numrin e ditës së fundit, dhe e
-fshin dy ditë pasi adresa u pa për herë të fundit. Ai mban edhe një regjistër të shkurtër të disa dhjetëra ngjarjeve të fundit të blerjeve — llojin, kohën dhe gjendjen që
-raportoi Google — pa token blerjeje dhe pa identifikues pajisjeje, për të kontrolluar që blerjet dhe rinovimet
-funksionojnë. Ne nuk i ruajmë udhëtimet tuaja.</p>
+<p>Për ta lidhur planin me telefonin pa llogari, aplikacioni përdor një çelës anonim: një hash i njëanshëm i nxjerrë
+nga Android ID e pajisjes. Ky çelës i dërgohet serverit tonë me çdo kontroll të planit, dhe i jepet Google Play-t me
+një blerje (si identifikues i llogarisë së blerjes, që Google e përdor kundër mashtrimit). Serveri ynë e ruan një
+telefon vetëm si një hash të mëtejshëm, të kripur dhe të njëanshëm, të atij çelësi, dhe vetëm për një telefon të
+lidhur me një plan; bashkë me të, datën kur u ruajt për herë të parë. Nuk e ruan kurrë vetë çelësin: kopjet që një
+version i mëparshëm mbante në regjistrat e abonimeve, ashtu siç ia kthente Google çelësin me një blerje, u hoqën më
+28 tetor 2026. Për çdo abonim ruan tokenin e blerjes (që të mund ta kontrollojë sërish planin me Google, p.sh. në
+çdo rinovim) dhe, pas një ndryshimi plani, tokenin e blerjes që u zëvendësua; atë që Google raporton për abonimin (produkti, mujor
+apo vjetor, gjendja, fundi i periudhës aktuale, nëse rinovohet, nëse është konfirmuar, nëse ishte blerje prove) dhe
+kur e pyeti Google për herë të fundit; dhe cilët telefona e përdorin — jo më shumë se pesë, si hash-e të kripura — me
+kohën kur secili u lidh për herë të fundit, që një telefon i papërdorur për 60 ditë të lirojë vendin. Gjendja e
+planit që kthen serveri ynë është e nënshkruar vetëm për telefonin tuaj, ndaj një kopje e saj nuk funksionon në një
+telefon tjetër.</p>
+<p>Aplikacioni e kontrollon planin kur niset, kur rikthehet në ekran dhe te skeda Premium: jo më shpesh se çdo
+dhjetë minuta nëse keni ose keni pasur një plan, dhe në planin falas, kur s'ka asgjë për të kontrolluar, jo më shpesh
+se një herë në javë. Një kontroll për një telefon pa plan nuk ruan asgjë.</p>
+<p>Serveri ynë përpunon adresën tuaj IP për të kufizuar abuzimet. Kufizuesi i kërkesave i Cloudflare numëron kërkesat
+nga çdo adresë gjatë një minute. Për kontrollet e tokenëve të blerjeve që nuk i ka parë më parë dhe për kodet e
+gabuara të hyrjes, serveri ynë mban një numërues për çdo adresë (për IPv6, për çdo rrjet) që ruan vetëm numrin e asaj
+dite, dhe e fshin dy ditë pas numërimit të fundit, kurrë para se të mbarojë ajo ditë. Ai mban edhe
+një regjistër të shkurtër të ngjarjeve të blerjeve të 30 ditëve të fundit — llojin, kohën dhe gjendjen që raportoi
+Google — pa token blerjeje, pa adresë IP dhe pa identifikues pajisjeje, për të kontrolluar që blerjet dhe rinovimet
+funksionojnë; hyrjet më të vjetra fshihen. Ne nuk i ruajmë udhëtimet tuaja.</p>
 <p>Kur serveri ynë nuk arrihet, aplikacioni pyet Google Play në telefonin tuaj cilat abonime ka llogaria juaj
 Google, që një plan i mbaruar ose i rimbursuar të mos funksionojë më. Kjo ndodh në telefonin tuaj; asgjë prej saj nuk
 na dërgohet.</p>
-<p>Qëllimet dhe bazat ligjore: ofrimi i Premium (zbatimi i kontratës); parandalimi i mashtrimit dhe abuzimit
-(interesa të ligjshme). Ruajtja: të dhënat e një abonimi — tokeni i blerjes, ajo që raportoi Google, telefonat e
-lidhur me të dhe kur u lidh secili për herë të fundit — fshihen automatikisht 12 muaj pasi mbaron periudha e fundit e
-paguar; për sa kohë vazhdoni të paguani, ruhen. Një telefon blerja e të cilit nuk u krye harrohet pas dy ditësh. Mund
-të na kërkoni t'i fshijmë më herët.</p>
+<h3>Kodet e hyrjes</h3>
+<p>Kodet e hyrjes u lejojnë njerëzve që zgjedhim ne — veçanërisht rishikuesve të aplikacioneve të Google Play — të
+përdorin Premium pa e blerë. Kodi futet në ekranin Premium dhe i dërgohet serverit tonë, i cili e krahason me kodet
+që ruan si hash-e të njëanshme; vetë kodi nuk ruhet. Nëse përputhet, gjendja e planit që serveri ynë nënshkruan për
+telefonin tuaj tregon deri kur jepet Premium dhe cili kod u përdor (emërtimi i tij, dhe fillimi i një hash-i të
+njëanshëm të kodit — kurrë vetë kodi). Serveri ynë nuk regjistron asgjë për telefonin: aplikacioni e mban atë plan të
+nënshkruar dhe e dërgon me çdo kontroll, dhe serveri kontrollon nënshkrimin e vet dhe që kodi është ende i vlefshëm.
+Qasja zgjat 30 ditë, mund të rinovohet duke e futur sërish kodin, dhe mbaron në kontrollin e radhës nëse e tërheqim
+kodin. Për çdo kod serveri ynë numëron sa herë u përdor çdo ditë (pa telefon, pa adresë; fshihet dy ditë më vonë) dhe
+mban një regjistër të shkurtër të përdorimeve të para të çdo dite (emërtimi i kodit dhe koha; 30 ditë), për të vënë
+re një kod të ndarë përtej njerëzve që ia dhamë. Kodet e gabuara numërohen për çdo adresë, siç përshkruhet më
+sipër.</p>
+<h3>Qëllimet, bazat ligjore dhe sa kohë ruhen të dhënat</h3>
+<p>Qëllimet dhe bazat ligjore: ofrimi i Premium dhe i kodeve të hyrjes (zbatimi i kontratës, dhe interesi ynë i
+ligjshëm që aplikacioni të rishikohet); parandalimi i mashtrimit dhe abuzimit (interesa të ligjshme).</p>
+<p>Çdo e dhënë fshihet vetë automatikisht:</p>
+<ul>
+  <li>të dhënat e një abonimi — tokenët e blerjes, ajo që raportoi Google, telefonat e lidhur me të dhe kur u lidh
+    secili për herë të fundit — 12 muaj pasi mbaron periudha e fundit e paguar (për sa kohë vazhdoni të paguani,
+    ruhen), dhe lidhjet e tokenëve dhe të telefonave me të një ditë më pas;</li>
+  <li>një telefon i ruajtur për një blerje që nuk u krye, dy ditë pasi u ruajt;</li>
+  <li>regjistri i kodit të hyrjes së një telefoni i mbajtur nga një version i mëparshëm i serverit tonë, një ditë pasi
+    mbaron qasja;</li>
+  <li>numërimet e kodeve të hyrjes, dy ditë pas numërimit të fundit; hyrjet e regjistrit të tyre, pas 30 ditësh;</li>
+  <li>numëruesit e adresave, dy ditë pas numërimit të fundit;</li>
+  <li>hyrjet e regjistrit, pas 30 ditësh.</li>
+</ul>
+<p>Fshirja zakonisht ndodh brenda pak minutash nga këto data. Nëse mbaron kapaciteti ditor falas i serverit tonë,
+fshirjet e asaj dite mund të vonohen; atëherë bëjmë një kontroll që i fshin, zakonisht brenda pak ditësh. Mund të na
+kërkoni t'i fshijmë më herët. Hapësira ruajtëse e Cloudflare mban gjithashtu një histori nga e cila serveri ynë mund
+t'i rikthente të dhënat e tij ashtu siç ishin në çdo moment të 30 ditëve të fundit; serveri ynë nuk e bën kurrë këtë.</p>
 
 <h2>Reklamat</h2>
 <p>Ky version i aplikacionit nuk shfaq reklama dhe nuk përmban gjurmim reklamash: nuk kërkon kurrë reklama dhe nuk
@@ -219,10 +303,10 @@ email-it, e përdorim për të shqyrtuar problemin dhe për t'ju përgjigjur, dh
 <ul>
   <li>Cilësimet (gjuha, tema, opsionet e hartës), stacionet dhe linjat e ruajtura, dhe stacionet e fundit.</li>
   <li>Nëse e keni parë hyrjen, si dhe cilin version të Kushteve të Përdorimit keni pranuar dhe kur.</li>
-  <li>Vetëm për Premium: gjendja e fundit e planit që serveri ynë konfirmoi dhe nënshkroi për telefonin tuaj; koha më
+  <li>Vetëm për Premium (të blerë ose me kod hyrjeje): gjendja e fundit e planit që serveri ynë konfirmoi dhe nënshkroi për telefonin tuaj; koha më
     e vonë që ka parë aplikacioni, për të vënë re një orë të kthyer mbrapa; dhe nëse Google Play në telefonin tuaj e
     tregonte ende planin kur serveri nuk arrihej. Me to, Premium vazhdon të funksionojë pa internet — deri në 35 ditë
-    pa lidhje, dhe kurrë përtej fundit të periudhës që keni paguar.</li>
+    pa lidhje, dhe kurrë përtej fundit të periudhës që keni paguar, ose të qasjes suaj.</li>
   <li>Pjesët e hartës të ruajtura.</li>
 </ul>
 <p>Këto të dhëna përjashtohen nga kopja rezervë cloud e Android. Fshihen kur pastroni të dhënat e aplikacionit ose
@@ -236,6 +320,7 @@ kur e çinstaloni.</p>
   <tr><td>Google (Google Cloud)</td><td>Dërgimi te serveri ynë i njoftimeve të Google Play për ndryshimet e abonimit (Pub/Sub), dhe hyrja e serverit tonë në API-në e Google Play</td><td><a href="https://policies.google.com/privacy">policies.google.com/privacy</a></td></tr>
   <tr><td>komoot GmbH (Photon)</td><td>Kërkimi i vendeve: fjalët që shkruani, siç përshkruhet më sipër</td><td><a href="https://www.komoot.com/privacy">komoot.com/privacy</a></td></tr>
   <tr><td>OpenFreeMap — vetëm si rezervë</td><td>Harta, nëse serveri ynë i hartës nuk arrihet</td><td><a href="https://openfreemap.org">openfreemap.org</a></td></tr>
+  <tr><td>Mapbox — vetëm versioni 1.0.0</td><td>Rrugët e ecjes për pjesët që pyeste ai version, pa adresën tuaj IP</td><td><a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a></td></tr>
 </table>
 <p>Këta ofrues mund t'i përpunojnë të dhënat jashtë Shqipërisë dhe Bashkimit Evropian, sipas garancive të tyre.</p>
 
@@ -252,7 +337,8 @@ Dhënave Personale (<a href="https://idp.al">idp.al</a>); në BE, te autoriteti 
 <h2>Siguria</h2>
 <p>Të gjitha lidhjet ndërmjet aplikacionit dhe serverave tanë përdorin HTTPS. Tokenët e blerjeve i dërgohen vetëm
 serverit tonë dhe Google; serveri ynë i ruan për të kontrolluar planin tuaj dhe nuk i shfaq apo i shkruan kurrë në
-regjistrat e tij.</p>
+regjistrat e tij. Regjistri i tij shënon vetëm defekte teknike, p.sh. kur Google nuk përgjigjet — kurrë një token,
+kod hyrjeje, çelës apo adresë.</p>
 
 <h2>Ndryshimet</h2>
 <p>E përditësojmë këtë politikë kur ndryshojnë aplikacioni ose shërbimet e tij. Versioni aktual gjendet gjithmonë te
