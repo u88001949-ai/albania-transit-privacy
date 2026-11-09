@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Albania Transit — Privacy Policy</title>
+<title>Leviz — Privacy Policy</title>
 <style>
   body { font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif; line-height: 1.6; max-width: 820px;
          margin: 0 auto; padding: 32px 20px; color: #1d2329; background: #fff; }
@@ -15,22 +15,23 @@
 </head>
 <body>
 
-<h1>Albania Transit — Privacy Policy</h1>
-<p class="muted">Last updated: 28 October 2026 · <a href="#shqip">Shqip më poshtë</a></p>
+<h1>Leviz — Privacy Policy</h1>
+<p class="muted">Last updated: 9 November 2026 · <a href="#shqip">Shqip më poshtë</a></p>
 
-<p>This policy explains what the Albania Transit app (package <code>al.albaniatransit.app</code>) processes, why, and
+<p>This policy explains what the Leviz app, formerly Albania Transit (package <code>al.albaniatransit.app</code>), processes, why, and
 who else is involved. The app does not need an account, does not use analytics or crash-reporting services, and does
 not sell personal data.</p>
 
 <h2>Who is responsible</h2>
-<p>The controller is the developer of Albania Transit: Franko Toska, Rruga Bardhyl, Tirana, Albania. Contact:
+<p>The controller is the developer of Leviz: Franko Toska, Rruga Bardhyl, Tirana, Albania. Contact:
 <a href="mailto:support.albaniatransit@gmail.com">support.albaniatransit@gmail.com</a>.</p>
 
 <h2>Your location</h2>
 <p>With your permission, the app uses your phone's location (precise or approximate, as you choose) to show nearby
 stops, plan a trip from where you are, and follow a trip you start. This happens on your phone. Your location is not
-sent to us. During a guided trip, Android shows a notification while the app follows your progress; it stops when the
-trip ends. You can use the app without location: the map then starts from Tirana's centre.</p>
+sent to us; version 1.0.0, an early version, could send it, to us and to Mapbox, as described below. During a guided
+trip, Android shows a notification while the app follows your progress; it stops when the trip ends. You can use the
+app without location: the map then starts from Tirana's centre.</p>
 
 <h2>The map</h2>
 <p>To draw the map, the app downloads map tiles, fonts and icons from our map server, hosted on Cloudflare
@@ -39,13 +40,19 @@ IP address and says which part of the map is being shown. We do not keep logs of
 Cloudflare processes them to deliver and protect the service. If our map server cannot be reached, the app may load
 the map from OpenFreeMap instead (<a href="https://openfreemap.org">openfreemap.org</a>), which then receives the same
 kind of request. Map tiles you have viewed are cached on your phone so they can be shown again, also offline.</p>
+<p>Version 1.0.0 of the app, an early version, drew its map with Mapbox instead. It downloaded the map from Mapbox's
+servers, which receive your IP address and which part of the map is shown, and Mapbox's map software sent Mapbox
+your phone's location (if you allowed the app to use it) and data on how the map was used, which Mapbox says it
+de-identifies and uses to improve its maps, unless you turned off "Share anonymous data with Mapbox" in that version's
+Settings. To count its users, Mapbox's software also sent an identifier it creates for each installation of the app.
+Later versions contain no Mapbox software.</p>
 <p>The app checks whether it is online by looking up the map server's address (a DNS lookup).</p>
 
 <h2>Walking directions, timetables and trip planning</h2>
-<p>Timetables, stops, lines and the walking network are stored inside the app. Trips and walking directions are
-calculated on your phone; your origin and destination are not sent to us.</p>
+<p>Timetables, stops, lines, the lists of buses to other cities and the walking network are stored inside the app.
+Trips and walking directions are calculated on your phone; your origin and destination are not sent to us.</p>
 <p>Version 1.0.0 of the app, an early version, instead asked our server for each walking leg: it sent the start and
-end of the leg, rounded to about 11 m, and, like any web request, your IP address, used only to limit abuse. Our
+end of the leg (the start can be where you are), rounded to about 11 m, and, like any web request, your IP address, used only to limit abuse. Our
 server got the route from Mapbox, which receives those points from our server — not your IP address — and Cloudflare
 keeps the answer in its cache for up to a year so that the same walk is not asked for again; nothing that identifies
 you is stored with it. Later versions do not send this.</p>
@@ -54,10 +61,18 @@ you is stored with it. Later versions do not send this.</p>
 <p>Search first looks through the places stored inside the app. When you are online and type three letters or more,
 the words you type are also sent to Photon, an OpenStreetMap search service run by komoot GmbH
 (<code>photon.komoot.io</code>), so search can find every street, café, shop and address in Albania. Along with the
-words goes the centre of the city you are searching in (Tirana, Durrës or Berat) — never your own location — the
+words goes the centre of the city you are searching in (Tirana, Shkodër, Durrës or Berat) — never your own location — the
 app's name and version, and, like any web request, your IP address. Nothing that identifies you or your device is
 sent. komoot decides how long it keeps these requests; see its privacy policy. Offline, search uses only the places
 stored in the app.</p>
+
+<h2>Live bus positions</h2>
+<p>The app can show buses where an official real-time feed places them, once such a feed is available to it (none is
+yet). To find out, the app asks our server whether there is one — only when you open the map's layers panel, or when
+you have switched live buses on — and, while live buses are on and the map is open, asks for the positions about
+every 20 seconds. These requests carry nothing about you or your device: no identifier, no location. Like any web
+request they carry your IP address, which Cloudflare's rate limiter counts over a minute; our server does not store
+it.</p>
 
 <h2>Premium (only if you buy it)</h2>
 <p>Premium is sold through Google Play. When you buy it, Google Play handles the payment; we never receive your name,
@@ -127,9 +142,15 @@ does not ask Android for the advertising ID.</p>
 
 <h2>Reports and messages you send</h2>
 <p>"Report a problem" and "Send email" open your own e-mail app with a message written for you. Nothing is sent until
-you press Send. A report may include the stop, line or place it is about and the app's version — never a device
-identifier. We use what you send, including your e-mail address, to look into the problem and reply, and we delete it
-on request.</p>
+you press Send. A report may include the stop, line or place it is about, a trip's start and end as the app names
+them ("My location", never where you are), and the app's version — never a device identifier. A report about a bus
+leaves room for the time and the bus's plate number, which you fill in only if you want to. We use what you send,
+including your e-mail address, to look into the problem and reply, and we delete it on request.</p>
+
+<h2>Links to other websites</h2>
+<p>The app links to its official sources — the municipalities of Tirana, Durrës and Shkodër, TLA Tirana and
+OpenStreetMap — and to your subscriptions in Google Play. They open in your web browser (some in a browser window
+shown inside the app). The app sends those sites nothing about you; each site's own privacy policy applies.</p>
 
 <h2>What stays on your phone</h2>
 <ul>
@@ -152,7 +173,7 @@ app.</p>
   <tr><td>Google (Google Cloud)</td><td>Delivering Google Play's notices about subscription changes to our server (Pub/Sub), and our server's sign-in to Google Play's API</td><td><a href="https://policies.google.com/privacy">policies.google.com/privacy</a></td></tr>
   <tr><td>komoot GmbH (Photon)</td><td>Place search: the words you type, as described above</td><td><a href="https://www.komoot.com/privacy">komoot.com/privacy</a></td></tr>
   <tr><td>OpenFreeMap — only as a fallback</td><td>The map, if our map server is unreachable</td><td><a href="https://openfreemap.org">openfreemap.org</a></td></tr>
-  <tr><td>Mapbox — version 1.0.0 only</td><td>Walking routes for the legs that version asked about, without your IP address</td><td><a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a></td></tr>
+  <tr><td>Mapbox — version 1.0.0 only</td><td>That version's map, with the location, usage data and installation identifier its map software sends; walking routes for the legs that version asked about, without your IP address</td><td><a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a></td></tr>
 </table>
 <p>These providers may process data outside Albania and the European Union, under their own safeguards.</p>
 
@@ -163,7 +184,7 @@ complain to a data-protection authority — in Albania, the Information and Data
 (<a href="https://idp.al">idp.al</a>); in the EU, the authority where you live.</p>
 
 <h2>Children</h2>
-<p>Albania Transit is a general-audience travel app and is not directed at children under 13.</p>
+<p>Leviz is a general-audience travel app and is not directed at children under 13.</p>
 
 <h2>Security</h2>
 <p>All connections between the app and our servers use HTTPS. Purchase tokens are sent only to our server and to
@@ -177,21 +198,22 @@ technical failures, such as Google not answering — never a token, access code,
 <hr>
 
 <div lang="sq" id="shqip">
-<h1>Albania Transit — Politika e Privatësisë</h1>
-<p class="muted">Përditësuar më: 28 tetor 2026</p>
+<h1>Leviz — Politika e Privatësisë</h1>
+<p class="muted">Përditësuar më: 9 nëntor 2026</p>
 
-<p>Kjo politikë shpjegon çfarë përpunon aplikacioni Albania Transit (paketa <code>al.albaniatransit.app</code>), pse,
+<p>Kjo politikë shpjegon çfarë përpunon aplikacioni Leviz, më parë Albania Transit (paketa <code>al.albaniatransit.app</code>), pse,
 dhe kush tjetër përfshihet. Aplikacioni nuk kërkon llogari, nuk përdor shërbime analitike apo raportimi të
 gabimeve, dhe nuk shet të dhëna personale.</p>
 
 <h2>Kush është përgjegjës</h2>
-<p>Kontrollues është zhvilluesi i Albania Transit: Franko Toska, Rruga Bardhyl, Tiranë, Shqipëri. Kontakt:
+<p>Kontrollues është zhvilluesi i Leviz: Franko Toska, Rruga Bardhyl, Tiranë, Shqipëri. Kontakt:
 <a href="mailto:support.albaniatransit@gmail.com">support.albaniatransit@gmail.com</a>.</p>
 
 <h2>Vendndodhja juaj</h2>
 <p>Me lejen tuaj, aplikacioni përdor vendndodhjen e telefonit (të saktë ose të përafërt, sipas zgjedhjes suaj) për
 të treguar stacionet afër, për të planifikuar një udhëtim nga vendi ku jeni dhe për të ndjekur një udhëtim që
-nisni. Kjo ndodh në telefonin tuaj. Vendndodhja juaj nuk na dërgohet. Gjatë një udhëtimi të udhëhequr, Android
+nisni. Kjo ndodh në telefonin tuaj. Vendndodhja juaj nuk na dërgohet; versioni 1.0.0, një version i hershëm, mund ta
+dërgonte, te ne dhe te Mapbox, siç përshkruhet më poshtë. Gjatë një udhëtimi të udhëhequr, Android
 tregon një njoftim ndërsa aplikacioni ndjek ecurinë; ai mbaron kur mbaron udhëtimi. Aplikacioni mund të përdoret
 pa vendndodhje: harta atëherë nis nga qendra e Tiranës.</p>
 
@@ -203,13 +225,21 @@ këtyre kërkesave për të identifikuar dikë; Cloudflare i përpunon për të 
 ynë i hartës nuk arrihet, aplikacioni mund ta ngarkojë hartën nga OpenFreeMap
 (<a href="https://openfreemap.org">openfreemap.org</a>), i cili atëherë merr të njëjtin lloj kërkese. Pjesët e
 hartës që keni parë ruhen në telefon që të shfaqen sërish, edhe pa internet.</p>
+<p>Versioni 1.0.0 i aplikacionit, një version i hershëm, e vizatonte hartën me Mapbox. E shkarkonte hartën nga
+serverët e Mapbox, të cilët marrin adresën tuaj IP dhe mësojnë cila pjesë e hartës po shfaqet, dhe programi i Mapbox
+për hartën i dërgonte Mapbox vendndodhjen e telefonit tuaj (nëse i lejonit aplikacionit ta përdorte) dhe të dhëna se si
+përdorej harta, të cilat Mapbox thotë se i anonimizon dhe i përdor për të përmirësuar hartat e veta, përveç nëse e
+fiknit "Ndaj të dhëna anonime me Mapbox" te Cilësimet e atij versioni. Për të numëruar përdoruesit e vet, programi i
+Mapbox dërgonte gjithashtu një identifikues që krijon për çdo instalim të aplikacionit. Versionet e mëvonshme nuk
+përmbajnë asnjë program të Mapbox.</p>
 <p>Aplikacioni kontrollon nëse ka internet duke kërkuar adresën e serverit të hartës (një kërkim DNS).</p>
 
 <h2>Udhëzimet e ecjes, oraret dhe planifikimi i udhëtimit</h2>
-<p>Oraret, stacionet, linjat dhe rrjeti i ecjes ruhen brenda aplikacionit. Udhëtimet dhe udhëzimet e ecjes
-llogariten në telefonin tuaj; nisja dhe destinacioni juaj nuk na dërgohen.</p>
+<p>Oraret, stacionet, linjat, listat e autobusëve për qytete të tjera dhe rrjeti i ecjes ruhen brenda
+aplikacionit. Udhëtimet dhe udhëzimet e ecjes llogariten në telefonin tuaj; nisja dhe destinacioni juaj nuk na
+dërgohen.</p>
 <p>Versioni 1.0.0 i aplikacionit, një version i hershëm, e pyeste në vend të kësaj serverin tonë për çdo pjesë
-ecjeje: dërgonte fillimin dhe fundin e saj, të rrumbullakosura në rreth 11 m, dhe, si çdo kërkesë në internet,
+ecjeje: dërgonte fillimin dhe fundin e saj (fillimi mund të jetë vendi ku jeni), të rrumbullakosura në rreth 11 m, dhe, si çdo kërkesë në internet,
 adresën tuaj IP, të përdorur vetëm për të kufizuar abuzimet. Serveri ynë e merrte rrugën nga Mapbox, i cili i merr
 këto pika nga serveri ynë — jo adresën tuaj IP — dhe Cloudflare e mban përgjigjen në memorien e vet deri në një vit,
 që e njëjta ecje të mos pyetet sërish; me të nuk ruhet asgjë që ju identifikon. Versionet e mëvonshme nuk e dërgojnë
@@ -219,10 +249,18 @@ këtë.</p>
 <p>Kërkimi shikon së pari vendet e ruajtura brenda aplikacionit. Kur jeni në internet dhe shkruani tre shkronja ose
 më shumë, fjalët që shkruani i dërgohen edhe Photon-it, një shërbim kërkimi i OpenStreetMap që e drejton komoot GmbH
 (<code>photon.komoot.io</code>), që kërkimi të gjejë çdo rrugë, kafe, dyqan dhe adresë në Shqipëri. Bashkë me fjalët
-dërgohet qendra e qytetit ku kërkoni (Tiranë, Durrës ose Berat) — kurrë vendndodhja juaj — emri dhe versioni i
+dërgohet qendra e qytetit ku kërkoni (Tiranë, Shkodër, Durrës ose Berat) — kurrë vendndodhja juaj — emri dhe versioni i
 aplikacionit, dhe, si në çdo kërkesë në internet, adresa juaj IP. Nuk dërgohet asgjë që ju identifikon ju ose
 pajisjen tuaj. komoot vendos sa kohë i mban këto kërkesa; shihni politikën e tij të privatësisë. Pa internet, kërkimi
 përdor vetëm vendet e ruajtura në aplikacion.</p>
+
+<h2>Pozicionet e autobusëve në kohë reale</h2>
+<p>Aplikacioni mund të tregojë autobusët aty ku i vendos një burim zyrtar në kohë reale, sapo një burim i tillë t'i
+jetë në dispozicion (ende asnjë). Për ta mësuar, aplikacioni pyet serverin tonë nëse ka një të tillë — vetëm kur hapni
+panelin e shtresave të hartës, ose kur i keni ndezur autobusët live — dhe, ndërsa autobusët live janë ndezur dhe harta
+është e hapur, kërkon pozicionet afërsisht çdo 20 sekonda. Këto kërkesa nuk mbartin asgjë për ju ose pajisjen tuaj:
+asnjë identifikues, asnjë vendndodhje. Si çdo kërkesë në internet, mbartin adresën tuaj IP, të cilën kufizuesi i
+kërkesave i Cloudflare e numëron për një minutë; serveri ynë nuk e ruan.</p>
 
 <h2>Premium (vetëm nëse e blini)</h2>
 <p>Premium shitet përmes Google Play. Kur e blini, pagesën e trajton Google Play; ne nuk marrim kurrë emrin, adresën
@@ -296,8 +334,16 @@ i kërkon Android-it ID-në e reklamave.</p>
 <h2>Raportet dhe mesazhet që na dërgoni</h2>
 <p>«Raporto një problem» dhe «Dërgo email» hapin aplikacionin tuaj të email-it me një mesazh të shkruar për ju.
 Asgjë nuk dërgohet pa shtypur Dërgo. Një raport mund të përmbajë stacionin, linjën ose vendin për të cilin bëhet
-fjalë dhe versionin e aplikacionit — kurrë një identifikues pajisjeje. Atë që na dërgoni, përfshirë adresën tuaj të
-email-it, e përdorim për të shqyrtuar problemin dhe për t'ju përgjigjur, dhe e fshijmë me kërkesë.</p>
+fjalë, nisjen dhe mbërritjen e një udhëtimi ashtu siç i emërton aplikacioni («Vendndodhja ime», kurrë vendi ku
+jeni), dhe versionin e aplikacionit — kurrë një identifikues pajisjeje. Një raport për një autobus lë vend për orën
+dhe targën e autobusit, që i plotësoni vetëm nëse dëshironi. Atë që na dërgoni, përfshirë adresën tuaj të email-it,
+e përdorim për të shqyrtuar problemin dhe për t'ju përgjigjur, dhe e fshijmë me kërkesë.</p>
+
+<h2>Lidhjet me faqe të tjera</h2>
+<p>Aplikacioni ka lidhje me burimet e veta zyrtare — bashkitë e Tiranës, Durrësit dhe Shkodrës, TLA Tirana dhe
+OpenStreetMap — dhe me abonimet tuaja në Google Play. Ato hapen në shfletuesin tuaj (disa në një dritare shfletuesi
+brenda aplikacionit). Aplikacioni nuk u dërgon këtyre faqeve asgjë për ju; vlen politika e privatësisë e secilës
+faqe.</p>
 
 <h2>Çfarë mbetet në telefonin tuaj</h2>
 <ul>
@@ -320,7 +366,7 @@ kur e çinstaloni.</p>
   <tr><td>Google (Google Cloud)</td><td>Dërgimi te serveri ynë i njoftimeve të Google Play për ndryshimet e abonimit (Pub/Sub), dhe hyrja e serverit tonë në API-në e Google Play</td><td><a href="https://policies.google.com/privacy">policies.google.com/privacy</a></td></tr>
   <tr><td>komoot GmbH (Photon)</td><td>Kërkimi i vendeve: fjalët që shkruani, siç përshkruhet më sipër</td><td><a href="https://www.komoot.com/privacy">komoot.com/privacy</a></td></tr>
   <tr><td>OpenFreeMap — vetëm si rezervë</td><td>Harta, nëse serveri ynë i hartës nuk arrihet</td><td><a href="https://openfreemap.org">openfreemap.org</a></td></tr>
-  <tr><td>Mapbox — vetëm versioni 1.0.0</td><td>Rrugët e ecjes për pjesët që pyeste ai version, pa adresën tuaj IP</td><td><a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a></td></tr>
+  <tr><td>Mapbox — vetëm versioni 1.0.0</td><td>Harta e atij versioni, me vendndodhjen, të dhënat e përdorimit dhe identifikuesin e instalimit që dërgon programi i saj; rrugët e ecjes për pjesët që pyeste ai version, pa adresën tuaj IP</td><td><a href="https://www.mapbox.com/legal/privacy">mapbox.com/legal/privacy</a></td></tr>
 </table>
 <p>Këta ofrues mund t'i përpunojnë të dhënat jashtë Shqipërisë dhe Bashkimit Evropian, sipas garancive të tyre.</p>
 
@@ -332,7 +378,7 @@ autoritet për mbrojtjen e të dhënave — në Shqipëri, te Komisioneri për t
 Dhënave Personale (<a href="https://idp.al">idp.al</a>); në BE, te autoriteti i vendit ku jetoni.</p>
 
 <h2>Fëmijët</h2>
-<p>Albania Transit është një aplikacion udhëtimi për publikun e gjerë dhe nuk u drejtohet fëmijëve nën 13 vjeç.</p>
+<p>Leviz është një aplikacion udhëtimi për publikun e gjerë dhe nuk u drejtohet fëmijëve nën 13 vjeç.</p>
 
 <h2>Siguria</h2>
 <p>Të gjitha lidhjet ndërmjet aplikacionit dhe serverave tanë përdorin HTTPS. Tokenët e blerjeve i dërgohen vetëm
